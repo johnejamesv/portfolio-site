@@ -47,7 +47,6 @@ export function AfterMode({
   const [logs, setLogs] = useState<LogLine[]>([]);
 
   const rowsRef = useRef<Row[]>(rows);
-  rowsRef.current = rows;
   const logIdRef = useRef(0);
   const timersRef = useRef<number[]>([]);
   const autoFetched = useRef(false);
@@ -55,7 +54,12 @@ export function AfterMode({
   const autoTurnedIn = useRef(false);
 
   useEffect(() => {
-    return () => timersRef.current.forEach(clearTimeout);
+    rowsRef.current = rows;
+  }, [rows]);
+
+  useEffect(() => {
+    const timers = timersRef.current;
+    return () => timers.forEach(clearTimeout);
   }, []);
 
   const schedule = (fn: () => void, delay: number) => {

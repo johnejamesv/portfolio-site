@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# John Portfolio Site
 
-## Getting Started
+Standalone Next.js portfolio/demo site for John E James V.
 
-First, run the development server:
+This repo was copied out of the career knowledge base scratch worktree on 2026-05-10. Keep ongoing site development here, not under `C:\job-search\.claude\worktrees`.
 
-```bash
+## Commands
+
+```powershell
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For linting the app source:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```powershell
+npm run lint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Source Boundary
 
-## Learn More
+- Public site code and public-safe assets live in this repo.
+- Private/source portfolio evidence lives in `C:\job-search\materials\portfolio`.
+- Copy material from the career KB only after editing it into public-safe wording/assets.
+- Do not commit `.next`, `node_modules`, local logs, auth files, or generated output captures.
 
-To learn more about Next.js, take a look at the following resources:
+## Verified Baseline
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Verified on 2026-05-10:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run lint`
+- `npm run build`

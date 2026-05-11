@@ -18,7 +18,6 @@ function Hot({
   children,
   className = "",
   as: As = "button",
-  ...rest
 }: {
   id: string;
   step: Step | null;
@@ -27,7 +26,7 @@ function Hot({
   children: ReactNode;
   className?: string;
   as?: "button" | "div";
-} & Record<string, unknown>) {
+}) {
   const isTarget = step?.targetId === id;
   const cls = `${className} ${isTarget ? "pulse-target" : ""}`;
   const handler = () => {
@@ -300,7 +299,7 @@ function PortalContent({ state, step, onTarget, interactive, Hot }: SubProps) {
 
       {portal.scope === "my" && portal.search && !portal.sessionId && (
         <div className="text-xs text-[var(--bad)] fade-in">
-          0 results — scope is "My Sites". Site exists but isn't assigned to you.
+          0 results - scope is &quot;My Sites&quot;. Site exists but isn&apos;t assigned to you.
         </div>
       )}
 

@@ -66,50 +66,41 @@ const roles: Role[] = [
 const skillGroups: { title: string; items: string[] }[] = [
   {
     title: "Languages",
-    items: ["Python", "TypeScript", "JavaScript", "SQL", "VBA"],
+    items: ["Python", "TypeScript", "SQL"],
   },
   {
-    title: "Web & APIs",
-    items: ["FastAPI", "React", "Next.js", "Zustand", "TanStack Query", "HTMX"],
+    title: "Web",
+    items: ["Next.js", "React", "FastAPI", "Tailwind"],
   },
   {
     title: "AI / Eval",
     items: [
+      "LLM APIs (Anthropic · OpenAI · Gemini)",
       "LangGraph",
       "Pydantic",
-      "Anthropic API",
-      "OpenAI API",
-      "Vertex AI / Gemini",
       "Playwright agents",
     ],
   },
   {
     title: "Cloud & DevOps",
-    items: [
-      "Google Cloud Platform",
-      "Cloud Run / Cloud SQL / Cloud Storage",
-      "Terraform",
-      "Docker",
-      "GitHub Actions",
-    ],
+    items: ["Google Cloud Platform", "Terraform", "Docker", "GitHub Actions"],
   },
   {
     title: "Data",
     items: [
       "PostgreSQL",
       "SQLAlchemy",
-      "Geospatial analysis",
-      "Telemetry pipelines",
-      "EXIF / metadata",
+      "Geospatial",
+      "EXIF / telemetry",
     ],
   },
   {
-    title: "Engineering",
+    title: "Prior chapter",
     items: [
       "Aspen HYSYS",
-      "3D modeling QA",
-      "FAA Part 107 Remote Pilot",
       "Process Hazard Analysis",
+      "FAA Part 107",
+      "VBA",
     ],
   },
 ];

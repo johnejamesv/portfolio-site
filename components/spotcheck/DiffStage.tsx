@@ -1,7 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import type { Segment, SegmentDiff, Submission } from "./types";
-import { GhostButton, SegmentCard, StatusBadge, VersionBadge } from "./ui";
+import { GhostButton, StatusBadge, VersionBadge } from "./ui";
 
 type Props = {
   submissions: Submission[];

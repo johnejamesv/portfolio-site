@@ -20,7 +20,6 @@ export function DemoContainer() {
   const [running, setRunning] = useState(true);
 
   const [afterResetKey, setAfterResetKey] = useState(0);
-  const [, setCounterTick] = useState(0);
   const afterMetricsRef = useRef({ clicks: 0 });
 
   const step = stepIdx < beforeSteps.length ? beforeSteps[stepIdx] : null;
@@ -67,17 +66,13 @@ export function DemoContainer() {
     setRunning(true);
     afterMetricsRef.current.clicks = 0;
     setAfterResetKey((k) => k + 1);
-    setCounterTick((t) => t + 1);
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <Header view={view} setView={setView} />
+    <div className="flex flex-col gap-5">
+      <Header />
 
-      <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
-        <ModeToggle mode={mode} setMode={setMode} view={view} />
-        <Counter state={state} after={afterMetricsRef.current.clicks} view={view} />
-      </div>
+      <ComparisonToggle view={view} setView={setView} />
 
       {view === "before" ? (
         <div className="flex flex-col gap-4">
@@ -95,24 +90,27 @@ export function DemoContainer() {
             }
             stepIdx={stepIdx}
             total={beforeSteps.length}
+            mode={mode}
+            finished={finished}
           />
         </div>
       ) : (
         <AfterMode
           key={afterResetKey}
           metricsRef={afterMetricsRef}
-          onChange={() => setCounterTick((t) => t + 1)}
+          onChange={() => {}}
           autoplay={mode === "autoplay"}
         />
       )}
 
       <Controls
+        view={view}
         mode={mode}
+        setMode={setMode}
         running={running}
         setRunning={setRunning}
         finished={finished}
         reset={reset}
-        showPlayPause={view === "before"}
       />
 
       <Footer />
@@ -120,110 +118,122 @@ export function DemoContainer() {
   );
 }
 
-function Header({ view, setView }: { view: View; setView: (v: View) => void }) {
+function Header() {
   return (
-    <div className="flex items-end justify-between gap-4 flex-wrap">
-      <div>
-        <div className="text-xs font-mono text-[var(--muted)] mb-1">case study · interactive</div>
-        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">
-          SpiderZZ — human-in-the-loop QA orchestrator
-        </h1>
-        <p className="text-sm text-[var(--muted)] mt-2 max-w-2xl">
-          Telecom inspection QA used to mean juggling three platforms per site. SpiderZZ turns that into
-          a prepared queue. Try it both ways.
-        </p>
-      </div>
-      <div className="inline-flex rounded-md border border-[var(--border)] overflow-hidden">
-        <button
-          onClick={() => setView("before")}
-          className={`px-4 py-2 text-sm ${
-            view === "before"
-              ? "bg-[var(--panel)] text-[var(--foreground)]"
-              : "bg-[var(--panel-2)] text-[var(--muted)]"
-          }`}
-        >
-          Before · manual
-        </button>
-        <button
-          onClick={() => setView("after")}
-          className={`px-4 py-2 text-sm border-l border-[var(--border)] ${
-            view === "after"
-              ? "bg-[var(--panel)] text-[var(--foreground)]"
-              : "bg-[var(--panel-2)] text-[var(--muted)]"
-          }`}
-        >
-          After · orchestrated
-        </button>
-      </div>
+    <div className="flex flex-col gap-2">
+      <div className="text-xs font-mono text-[var(--muted)]">case study · interactive</div>
+      <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">
+        SpiderZZ — human-in-the-loop QA orchestrator
+      </h1>
+      <p className="text-sm text-[var(--muted)] max-w-2xl">
+        Telecom inspection QA used to mean juggling three platforms per site. SpiderZZ turns that into
+        a prepared queue. Pick a side to see the same review handled either way.
+      </p>
     </div>
   );
 }
 
-function ModeToggle({ mode, setMode, view }: { mode: Mode; setMode: (m: Mode) => void; view: View }) {
+function ComparisonToggle({ view, setView }: { view: View; setView: (v: View) => void }) {
   return (
-    <div className="inline-flex items-center gap-2">
-      <span className="text-xs text-[var(--muted)]">mode</span>
-      <div className="inline-flex rounded-md border border-[var(--border)] overflow-hidden">
-        <button
-          onClick={() => setMode("autoplay")}
-          className={`px-3 py-1.5 text-xs ${
-            mode === "autoplay" ? "bg-[var(--panel)]" : "bg-[var(--panel-2)] text-[var(--muted)]"
-          }`}
-        >
-          Autoplay
-        </button>
-        <button
-          onClick={() => setMode("interactive")}
-          className={`px-3 py-1.5 text-xs border-l border-[var(--border)] ${
-            mode === "interactive" ? "bg-[var(--panel)]" : "bg-[var(--panel-2)] text-[var(--muted)]"
-          }`}
-        >
-          Try it yourself
-        </button>
-      </div>
-      {view === "before" && mode === "interactive" && (
-        <span className="text-xs text-[var(--muted)]">
-          click the pulsing target to advance
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--muted)]">
+          side-by-side
         </span>
-      )}
-    </div>
-  );
-}
-
-function Counter({ state, after, view }: { state: BeforeState; after: number; view: View }) {
-  if (view === "before") {
-    return (
-      <div className="grid grid-cols-4 gap-3 text-xs">
-        <Stat label="clicks" value={state.clicks} />
-        <Stat label="tab switches" value={state.tabSwitches} />
-        <Stat label="copies" value={state.copies} />
-        <Stat label="pastes" value={state.pastes} />
+        <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--muted)]">
+          showing: {view === "before" ? "manual workflow" : "orchestrated"}
+        </span>
       </div>
-    );
-  }
-  return (
-    <div className="grid grid-cols-4 gap-3 text-xs">
-      <Stat label="clicks" value={after} />
-      <Stat label="tab switches" value={0} />
-      <Stat label="copies" value={0} />
-      <Stat label="pastes" value={0} />
+      <div className="grid grid-cols-2 gap-2">
+        <ComparisonCard
+          active={view === "before"}
+          accent="bad"
+          eyebrow="before"
+          title="The manual workflow"
+          subtitle="3 platforms · tab switching · copy / paste"
+          onClick={() => setView("before")}
+        />
+        <ComparisonCard
+          active={view === "after"}
+          accent="good"
+          eyebrow="after"
+          title="With SpiderZZ"
+          subtitle="Prepared queue · one dashboard · turn-in"
+          onClick={() => setView("after")}
+        />
+      </div>
     </div>
   );
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
+function ComparisonCard({
+  active,
+  accent,
+  eyebrow,
+  title,
+  subtitle,
+  onClick,
+}: {
+  active: boolean;
+  accent: "bad" | "good";
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  onClick: () => void;
+}) {
+  const accentText = accent === "bad" ? "text-[var(--bad)]" : "text-[var(--good)]";
+  const activeBg = accent === "bad" ? "bg-[var(--bad)]/10" : "bg-[var(--good)]/10";
+  const activeBorder = accent === "bad" ? "border-[var(--bad)]/40" : "border-[var(--good)]/40";
   return (
-    <div className="px-3 py-2 rounded-md border border-[var(--border)] bg-[var(--panel-2)] min-w-[88px]">
-      <div className="text-[10px] uppercase tracking-wider text-[var(--muted)]">{label}</div>
-      <div className="text-base font-mono">{value}</div>
-    </div>
+    <button
+      onClick={onClick}
+      aria-pressed={active}
+      className={`text-left rounded-lg border p-4 transition-all ${
+        active
+          ? `${activeBorder} ${activeBg}`
+          : "border-[var(--border)] bg-[var(--panel-2)] hover:bg-[var(--panel)]"
+      }`}
+    >
+      <div className="flex items-center gap-2">
+        <span
+          className={`text-[10px] font-mono uppercase tracking-wider ${
+            active ? accentText : "text-[var(--muted)]"
+          }`}
+        >
+          {eyebrow}
+        </span>
+        {active && (
+          <span className={`text-[10px] font-mono ${accentText}`}>● viewing</span>
+        )}
+      </div>
+      <div className="text-sm font-medium mt-1 text-[var(--foreground)]">{title}</div>
+      <div className="text-xs text-[var(--muted)] mt-0.5">{subtitle}</div>
+    </button>
   );
 }
 
-function Caption({ text, stepIdx, total }: { text: string; stepIdx: number; total: number }) {
+function Caption({
+  text,
+  stepIdx,
+  total,
+  mode,
+  finished,
+}: {
+  text: string;
+  stepIdx: number;
+  total: number;
+  mode: Mode;
+  finished: boolean;
+}) {
+  const hint = !finished && mode === "interactive" ? "click the pulsing target to advance" : null;
   return (
     <div className="rounded-md border border-[var(--border)] bg-[var(--panel-2)] px-4 py-3 flex justify-between items-center gap-4">
-      <p className="text-sm">{text}</p>
+      <div className="flex flex-col gap-1 min-w-0">
+        <p className="text-sm">{text}</p>
+        {hint && (
+          <p className="text-[11px] font-mono text-[var(--accent-2)]">{hint}</p>
+        )}
+      </div>
       <span className="text-xs font-mono text-[var(--muted)] shrink-0">
         {Math.min(stepIdx + 1, total)} / {total}
       </span>
@@ -232,36 +242,70 @@ function Caption({ text, stepIdx, total }: { text: string; stepIdx: number; tota
 }
 
 function Controls({
+  view,
   mode,
+  setMode,
   running,
   setRunning,
   finished,
   reset,
-  showPlayPause,
 }: {
+  view: View;
   mode: Mode;
+  setMode: (m: Mode) => void;
   running: boolean;
   setRunning: (b: boolean) => void;
   finished: boolean;
   reset: () => void;
-  showPlayPause: boolean;
 }) {
   return (
-    <div className="flex gap-2">
-      {showPlayPause && mode === "autoplay" && !finished && (
+    <div className="flex flex-wrap items-center gap-3">
+      {view === "before" && (
+        <div className="inline-flex items-center gap-2">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--muted)]">
+            mode
+          </span>
+          <div className="inline-flex rounded-md border border-[var(--border)] overflow-hidden">
+            <button
+              onClick={() => setMode("autoplay")}
+              className={`px-3 py-1.5 text-xs ${
+                mode === "autoplay"
+                  ? "bg-[var(--panel)] text-[var(--foreground)]"
+                  : "bg-[var(--panel-2)] text-[var(--muted)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              Watch
+            </button>
+            <button
+              onClick={() => setMode("interactive")}
+              className={`px-3 py-1.5 text-xs border-l border-[var(--border)] ${
+                mode === "interactive"
+                  ? "bg-[var(--panel)] text-[var(--foreground)]"
+                  : "bg-[var(--panel-2)] text-[var(--muted)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              Try it yourself
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="flex gap-2 ml-auto">
+        {view === "before" && mode === "autoplay" && !finished && (
+          <button
+            onClick={() => setRunning(!running)}
+            className="text-xs px-3 py-1.5 rounded border border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)]"
+          >
+            {running ? "Pause" : "Play"}
+          </button>
+        )}
         <button
-          onClick={() => setRunning(!running)}
+          onClick={reset}
           className="text-xs px-3 py-1.5 rounded border border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)]"
         >
-          {running ? "Pause" : "Play"}
+          Reset
         </button>
-      )}
-      <button
-        onClick={reset}
-        className="text-xs px-3 py-1.5 rounded border border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)]"
-      >
-        Reset
-      </button>
+      </div>
     </div>
   );
 }
@@ -271,7 +315,7 @@ function Footer() {
     <div className="border-t border-[var(--border)] pt-6 mt-2 text-xs text-[var(--muted)] flex flex-col gap-2 max-w-3xl">
       <p>
         Real numbers, single-operator: ~25 min/site manually → under 4 min/site with the orchestrator.
-        100-site batch from "several days" to "a few hours". 1163-test unit suite green on 2026-05-06.
+        100-site batch from &quot;several days&quot; to &quot;a few hours&quot;. 1163-test unit suite green on 2026-05-06.
       </p>
       <p>
         Stack: Python · Playwright (isolated browser contexts per platform) · FastAPI + HTMX dashboard ·

@@ -57,17 +57,19 @@ const studies: CaseStudy[] = [
     cta: "read case study",
   },
   {
-    href: "/demos/evidence-grounded",
+    href: "/case-studies/evidence-grounded-ai-evaluation-pipeline",
     index: "04",
     eyebrow: "ai evaluation · provenance",
     title: "Evidence-grounded AI evaluation pipeline",
     blurb:
-      "A LangGraph pipeline that treats writing as an evaluation problem. Watch the red-team reviewer catch an unsupported metric and pull it from export.",
+      "A LangGraph pipeline that treats AI text generation as an evaluation problem. Provenance carried in the schema; an adversarial reviewer can hard-fail content before it reaches export.",
     bullets: [
       "Provenance carried in the schema",
       "Coverage map: strong / weak / adjacent / missing",
       "Adversarial review can hard-fail bullets",
     ],
+    thumbnail: "/evidence-grounded-thumbnail.png",
+    cta: "read case study",
   },
 ];
 
@@ -102,8 +104,7 @@ function Hero() {
               <br className="hidden md:block" /> messy operational workflows.
             </h1>
             <p className="text-base md:text-lg text-[var(--muted)] max-w-2xl leading-relaxed mt-2">
-              Selected work below: three interactive demos plus a case study on the visual
-              verification architecture inside SpotCheck.
+              Selected work below: interactive demos and case studies on the systems behind them.
             </p>
 
             <div className="flex items-center gap-3 mt-2">

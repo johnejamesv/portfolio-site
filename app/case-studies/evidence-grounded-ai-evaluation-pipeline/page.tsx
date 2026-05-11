@@ -1,4 +1,4 @@
-import { DemoContainer } from "@/components/evidence-grounded/DemoContainer";
+import Image from "next/image";
 import {
   ProofGrid,
   StackList,
@@ -10,23 +10,55 @@ import {
 export const metadata = {
   title: "Evidence-Grounded AI Evaluation Pipeline | John James",
   description:
-    "A LangGraph pipeline that treats resume writing as an evaluation problem: provenance-linked claims, coverage maps, and adversarial review that rejects unsupported metrics before export.",
+    "Case study of a LangGraph pipeline that treats AI text generation as an evaluation problem: provenance-linked claims, coverage maps, and adversarial review that rejects unsupported content before export.",
 };
 
-export default function EvidenceGroundedDemo() {
+export default function EvidenceGroundedCaseStudy() {
   return (
     <>
-      <main className="px-5 md:px-10 py-10 max-w-6xl mx-auto w-full">
-        <DemoContainer />
+      <main className="flex-1">
+        <section className="px-5 md:px-10 py-10 md:py-16">
+          <div className="max-w-6xl mx-auto flex flex-col gap-8">
+            <header className="max-w-3xl flex flex-col gap-4">
+              <span className="text-xs font-mono text-[var(--muted)] uppercase tracking-wider">
+                case study
+              </span>
+              <h1 className="font-display text-4xl md:text-6xl leading-[1.05] tracking-tight">
+                Evidence-grounded AI evaluation pipeline
+              </h1>
+              <p className="text-base md:text-lg text-[var(--muted)] leading-relaxed max-w-2xl">
+                A LangGraph pipeline that treats AI text generation as an evaluation problem.
+                Resume bullets are the surface; the interesting layer is what the system refuses to
+                export when the evidence doesn&apos;t back the claim.
+              </p>
+            </header>
+
+            <figure className="flex flex-col gap-3">
+              <div className="relative aspect-[2/3] max-w-md mx-auto w-full overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--panel-2)]">
+                <Image
+                  src="/evidence-grounded-thumbnail.png"
+                  alt="Pipeline diagram: source documents flow into evidence items, coverage map, drafted bullets, red-team review, and export, with rejected items routed back for review."
+                  fill
+                  priority
+                  sizes="(min-width: 768px) 448px, 100vw"
+                  className="object-cover"
+                />
+              </div>
+              <figcaption className="text-xs text-[var(--muted)] leading-relaxed max-w-3xl">
+                Source documents become evidence items with excerpts, requirements get coverage
+                ratings, bullets carry evidence IDs forward, and an adversarial reviewer can hard-fail
+                items that don&apos;t hold up before they reach export.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
       </main>
 
       <Writeup>
         <WriteupHeader
           eyebrow="case study"
-          title="Evidence-grounded AI evaluation pipeline"
-          lede="An evaluation-first take on AI text generation. Resume bullets are the surface; the
-          interesting layer is what the pipeline refuses to export when the evidence doesn't back
-          the claim."
+          title="Provenance-first AI writing as an evaluation problem"
+          lede="The accurate framing isn't &ldquo;AI writes a resume.&rdquo; It's: given source material and a target role, the system has to distinguish supported claims from plausible-sounding unsupported ones — and refuse to fabricate the bridge when the evidence isn't there."
         />
 
         <WriteupSection title="The problem">
